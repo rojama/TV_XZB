@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/details_key_pager"
+        android:layout_width="match_parent"
+        android:layout_height="60px"
+        android:layout_marginLeft="60px"
+        android:layout_marginRight="60px"
+        android:layout_marginTop="30px" />
+
+    <Gallery
+        android:id="@+id/details_key_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="60px"
+        android:layout_marginLeft="60px"
+        android:layout_marginRight="60px"
+        android:spacing="0dip"
+        android:unselectedAlpha="1" />
+
+</LinearLayout>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/video_details_bg"
+        android:orientation="vertical"
+        android:paddingTop="50dip" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginRight="60px">
+
+            <ImageView
+                android:id="@+id/details_poster"
+                android:layout_width="350px"
+                android:layout_height="500px"
+                android:scaleType="fitStart" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="55px"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/details_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="影片名称"
+                        android:textColor="#ffc5ff43"
+                        android:textSize="50px" />
+
+                    <TextView
+                        android:id="@+id/details_year"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8px"
+                        android:layout_weight="1.0"
+                        android:textColor="#ffffffff"
+                        android:textSize="40px" />
+
+                    <TextView
+                        android:id="@+id/details_sharpness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="30px"/>
+
+                    <TextView
+                        android:id="@+id/details_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8px"
+                        android:ellipsize="end"
+                        android:maxWidth="300px"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="#ffffffff"
+                        android:textSize="40px" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/details_director"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:singleLine="true"
+                        android:text="导演："
+                        android:textColor="#ffffffff"
+                        android:textSize="40px" />
+
+                    <TextView
+                        android:id="@+id/details_update"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15px"
+                        android:text=""
+                        android:textColor="#ffffffff"
+                        android:textSize="40px" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/details_actors"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="演员："
+                        android:textColor="#ffffffff"
+                        android:textSize="40px" />
+
+                    <TextView
+                        android:id="@+id/details_playTimes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15px"
+                        android:text=""
+                        android:textColor="#ffffffff"
+                        android:textSize="40px" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/details_video_introduce"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dip"
+                    android:layout_weight="1.0"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:text="影片描述"
+                    android:textColor="#ffb6b6b6"
+                    android:textSize="35px" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="3dip"
+                    android:scrollbars="none" >
+
+                    <RadioGroup
+                        android:id="@+id/video_details_resources"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+                    </RadioGroup>
+                </HorizontalScrollView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom" >
+
+                    <Button
+                        android:id="@+id/details_replay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20px"
+                        android:text="播放"
+                        android:textSize="35px"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/details_play"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20px"
+                        android:text="播放"
+                        android:textSize="35px" />
+
+                    <Button
+                        android:id="@+id/details_choose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20px"
+                        android:text="选集"
+                        android:textSize="35px" />
+
+                    <Button
+                        android:id="@+id/details_colection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="收藏"
+                        android:textSize="35px" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/details_key_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/media_info_choose"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</FrameLayout>
