@@ -1,6 +1,7 @@
 package com.fstar.tv;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -11,12 +12,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
@@ -44,6 +48,7 @@ public class DetailActivity extends Activity {
     private TextView titlePath;
     private ListView listView;
     private GridView gridView;
+    private Button searchButton;
     private ArrayList<String> list = new ArrayList<String>();  //当前列表名称
     private ArrayList<String> idList = new ArrayList<String>();  //当前列表ID
     private LinkedList<Map<String,Object>> pathList = new LinkedList<Map<String,Object>>(); //类别路径
@@ -63,6 +68,7 @@ public class DetailActivity extends Activity {
 
 //    private boolean isloading = false;
     private String now_UUID = "";
+    private String now_Title = "";
 
     private Toast toast;
 
@@ -77,6 +83,7 @@ public class DetailActivity extends Activity {
         titlePath = (TextView) findViewById(R.id.titlePath);
         listView = (ListView) findViewById(R.id.listView);
         gridView = (GridView) findViewById(R.id.gridView);
+        searchButton = (Button) findViewById(R.id.search_button);
         titles[0] = (Button) findViewById(R.id.title_button1);
         titles[1] = (Button) findViewById(R.id.title_button2);
         titles[2] = (Button) findViewById(R.id.title_button3);
@@ -87,6 +94,21 @@ public class DetailActivity extends Activity {
         Intent intent = getIntent();
         mode_id = intent.getStringExtra("MODE_ID");
         mode_name = intent.getStringExtra("MODE_NAME");
+
+        searchButton.setFocusable(true);
+        searchButton.setEnabled(true);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(DetailActivity.this, SearchActivity.class);
+                intent.putExtra("MODE_ID", mode_id);
+                intent.putExtra("MODE_NAME", mode_name);
+                startActivity(intent);
+            }
+        });
+
 
         ArrayAdapter<String> listArrayAdapter = new ArrayAdapter<String>
                 (this, R.layout.detail_list_item, list);
@@ -177,19 +199,6 @@ public class DetailActivity extends Activity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        //设置标题路径
-                        titlePath.setText((String)((Map)pathList.getFirst()).get("mode_name"));
-//                        titlePath.setText("目录：");
-//                        boolean first = true;
-//                        Iterator iterator = pathList.descendingIterator();
-//                        while (iterator.hasNext()){
-//                            if (!first) titlePath.append(">");
-//                            Map map = (Map) iterator.next();
-//                            titlePath.append((String) map.get("mode_name"));
-//                            first = false;
-//                        }
-
-
                         ((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
 
                         // 恢复选择项
@@ -248,6 +257,9 @@ public class DetailActivity extends Activity {
 
                                             @Override
                                             public void run() {
+                                                while(pathList.size()>1){
+                                                    pathList.pop();
+                                                }
                                                 loadSubList(position, false);
                                                 loadGrid(position);
                                                 super.run();
@@ -264,6 +276,22 @@ public class DetailActivity extends Activity {
                     case 4: //更新背景
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             if (bitmapBG != null) gridView.setBackground(new BitmapDrawable(bitmapBG));
+                        }
+                        break;
+                    case 5: //更新标题路径
+                        //设置标题路径
+//                        titlePath.setText((String)((Map)pathList.getFirst()).get("mode_name"));
+                        titlePath.setText("");
+                        boolean first = true;
+                        Iterator iterator = pathList.descendingIterator();
+                        while (iterator.hasNext()){
+                            if (!first) titlePath.append(" / ");
+                            Map map2 = (Map) iterator.next();
+                            titlePath.append((String) map2.get("mode_name"));
+                            first = false;
+                        }
+                        if (!now_Title.isEmpty()){
+                            titlePath.append(" / " + now_Title);
                         }
                         break;
                 }
@@ -373,6 +401,8 @@ public class DetailActivity extends Activity {
     private void loadGrid(Map listMap) {
         try {
             String type_id = (String) listMap.get("mode_id");
+            String super_name = (String) listMap.get("mode_name");
+
             String thread_UUID = UUID.randomUUID().toString();
             now_UUID = thread_UUID;
 
@@ -434,6 +464,7 @@ public class DetailActivity extends Activity {
     private synchronized void loadSubList(Map superMap, boolean isBack) {
         try {
             String super_id = (String) superMap.get("mode_id");
+            String super_name = (String) superMap.get("mode_name");
             String processBO = "com.fstar.cms.TVServerBO";
             String processMETHOD = "parseSubCate";
             String url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
@@ -443,7 +474,15 @@ public class DetailActivity extends Activity {
             if (json != null) {
                 JSONArray jsonArray = json.getJSONArray("subtype");
                 if (jsonArray.length() == 0) {
+                    now_Title = super_name;
+                    //通知更新标题
+                    Message message = new Message();
+                    message.what = 5;
+                    appHandler.sendMessage(message);
+
                     return;
+                }else{
+                    now_Title = "";
                 }
                 list.clear();
                 idList.clear();
@@ -465,6 +504,9 @@ public class DetailActivity extends Activity {
                 //通知更新标题和列表
                 Message message = new Message();
                 message.what = 1;
+                appHandler.sendMessage(message);
+                message = new Message();
+                message.what = 5;
                 appHandler.sendMessage(message);
             }
         } catch (Exception e) {

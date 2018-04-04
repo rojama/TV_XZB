@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TV_XZB.iml" filepath="$PROJECT_DIR$/TV_XZB.iml" />
-      <module fileurl="file://$PROJECT_DIR$/XinHuaTV.iml" filepath="$PROJECT_DIR$/XinHuaTV.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

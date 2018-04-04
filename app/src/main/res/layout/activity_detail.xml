@@ -1,120 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/detail_bg">
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="300dp"
-        android:layout_height="550dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:background="@android:color/background_light"
-        android:divider="#ddd"
-        android:dividerHeight="1px"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:listSelector="@drawable/detail_list_item_bg" />
-
-    <GridView
-        android:layout_width="wrap_content"
-        android:layout_height="590dp"
-        android:id="@+id/gridView"
-        android:layout_toRightOf="@+id/listView"
-        android:layout_alignBottom="@+id/listView"
-        android:layout_marginRight="10dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:columnWidth="150dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:layout_marginLeft="10dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/titlePath"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/listView"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="120dp"
-        android:textColor="#FF0000"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/detail_head"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:text=""
+        android:textColor="#00408d"
         android:textSize="35sp" />
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="59dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="#0000FF"
+        android:orientation="horizontal">
 
         <Button
-            android:layout_width="175dp"
-            android:layout_height="65dp"
-            android:text=""
             android:id="@+id/title_button1"
-            android:textSize="35sp"
-            android:textAlignment="center"
-            android:textColor="@drawable/detail_title_button_color"
-            android:background="@drawable/detail_title_button_bg"/>
-
-        <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
+            android:background="@drawable/detail_title_button_bg"
             android:text=""
+            android:textAlignment="center"
+            android:textColor="@drawable/detail_title_button_color"
+            android:textSize="35sp" />
+
+        <Button
             android:id="@+id/title_button2"
-            android:textSize="35sp"
-            android:textAlignment="center"
-            android:textColor="@drawable/detail_title_button_color"
-            android:background="@drawable/detail_title_button_bg"/>
-
-        <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
+            android:background="@drawable/detail_title_button_bg"
             android:text=""
+            android:textAlignment="center"
+            android:textColor="@drawable/detail_title_button_color"
+            android:textSize="35sp" />
+
+        <Button
             android:id="@+id/title_button3"
-            android:textSize="35sp"
-            android:textAlignment="center"
-            android:textColor="@drawable/detail_title_button_color"
-            android:background="@drawable/detail_title_button_bg"/>
-
-        <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
+            android:background="@drawable/detail_title_button_bg"
             android:text=""
+            android:textAlignment="center"
+            android:textColor="@drawable/detail_title_button_color"
+            android:textSize="35sp" />
+
+        <Button
             android:id="@+id/title_button4"
-            android:textSize="35sp"
-            android:textAlignment="center"
-            android:textColor="@drawable/detail_title_button_color"
-            android:background="@drawable/detail_title_button_bg"/>
-
-        <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
+            android:background="@drawable/detail_title_button_bg"
             android:text=""
+            android:textAlignment="center"
+            android:textColor="@drawable/detail_title_button_color"
+            android:textSize="35sp" />
+
+        <Button
             android:id="@+id/title_button5"
-            android:textSize="35sp"
-            android:textAlignment="center"
-            android:textColor="@drawable/detail_title_button_color"
-            android:background="@drawable/detail_title_button_bg"/>
-
-        <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
+            android:background="@drawable/detail_title_button_bg"
             android:text=""
-            android:id="@+id/title_button6"
-            android:textSize="35sp"
             android:textAlignment="center"
             android:textColor="@drawable/detail_title_button_color"
-            android:background="@drawable/detail_title_button_bg" />
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/title_button6"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:background="@drawable/detail_title_button_bg"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@drawable/detail_title_button_color"
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:background="@drawable/detail_title_button_bg"
+            android:text="搜索"
+            android:textAlignment="center"
+            android:textColor="#7EC0EE"
+            android:textSize="35sp" />
+
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:background="@android:color/background_light"
+                android:divider="#ddd"
+                android:dividerHeight="1px"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false"
+                android:listSelector="@drawable/detail_list_item_bg">
+
+
+            </ListView>
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:columnWidth="150dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp"
+            android:background="@android:color/background_dark" />
+
+    </LinearLayout>
+
+</LinearLayout>
