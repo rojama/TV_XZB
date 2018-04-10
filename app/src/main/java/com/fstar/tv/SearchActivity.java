@@ -24,6 +24,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fstar.tv.tools.Config;
 import com.fstar.tv.tools.Utils;
@@ -130,6 +131,7 @@ public class SearchActivity extends Activity {
             public void onClick(View v) {
                 CharSequence text = inputText.getText();
                 if (text.length() > 0) {
+                    Toast.makeText(context, "正在搜索中，请稍候", Toast.LENGTH_SHORT).show();
                     //init button data
                     new Thread() {
                         @Override
@@ -183,6 +185,8 @@ public class SearchActivity extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
+                    case 1:
+                        Toast.makeText(context, "搜索完成", Toast.LENGTH_SHORT).show();
                     case 2: //更新视频列表
                         ((SimpleAdapter)gridView.getAdapter()).notifyDataSetChanged();
                         break;
@@ -204,6 +208,11 @@ public class SearchActivity extends Activity {
             now_UUID = thread_UUID;
 
             Message message;
+            lstImageItem.clear();
+            //通知更新
+            message = new Message();
+            message.what = 2;
+            appHandler.sendMessage(message);
 
             String processBO = "com.fstar.cms.TVServerBO";
             String processMETHOD = "searchMedia";
@@ -211,8 +220,6 @@ public class SearchActivity extends Activity {
                     + processBO;
             url += "&key_word=" + text;
             JSONObject json = Utils.readHttpJSON(url);
-
-            lstImageItem.clear();
 
             if (json != null) {
                 JSONArray jsonArray = json.getJSONArray("mediaList");
@@ -242,7 +249,7 @@ public class SearchActivity extends Activity {
                     if (time == 0 || nowtime > time + 500) {
                         time = nowtime;
 
-                        //通知更新标题和列表
+                        //通知更新
                         message = new Message();
                         message.what = 2;
                         appHandler.sendMessage(message);
@@ -251,7 +258,7 @@ public class SearchActivity extends Activity {
             }
 
             message = new Message();
-            message.what = 2;
+            message.what = 1;
             appHandler.sendMessage(message);
         } catch (Exception e) {
             e.printStackTrace();

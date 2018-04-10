@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.fstar.tv.adapter.AllPagesAdapter;
 import com.fstar.tv.adapter.DetailsKeyTabAdapter;
 import com.fstar.tv.tools.Config;
+import com.fstar.tv.tools.DatabaseHelper;
 import com.fstar.tv.tools.Utils;
 
 import org.json.JSONArray;
@@ -56,6 +57,7 @@ public class MediaInfoActivity  extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         context = this;
 
@@ -109,7 +111,7 @@ public class MediaInfoActivity  extends Activity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        poster.setImageBitmap((Bitmap) mediaInfo.get("image"));
+                        poster.setImageBitmap((Bitmap) mediaInfo.get("image_bm"));
                         videoName.setText((String) mediaInfo.get("media_name"));
                         point.setText((String) mediaInfo.get("score"));
                         sharpness.setText("高清");
@@ -141,26 +143,50 @@ public class MediaInfoActivity  extends Activity {
         play.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (media_id != null && !media_id.isEmpty()) {
-                    Intent intent = new Intent();
-                    intent.setClass(MediaInfoActivity.this, VodActivity.class);
-                    intent.putExtra("MEDIA_ID", (String) mediaInfo.get("media_id"));
-                    intent.putExtra("MEDIA_NAME", (String) mediaInfo.get("media_name"));
-                    startActivity(intent);
-                }
+            if (media_id != null && !media_id.isEmpty()) {
+                myApp.addHistory(mediaInfo);
+                Intent intent = new Intent();
+                intent.setClass(MediaInfoActivity.this, VodActivity.class);
+                intent.putExtra("MEDIA_ID", (String) mediaInfo.get("media_id"));
+                intent.putExtra("MEDIA_NAME", (String) mediaInfo.get("media_name"));
+                startActivity(intent);
+            }
             }
         });
 
         choose.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (keyLayoutT.getVisibility() == View.VISIBLE) {
-                    keyLayoutT.setVisibility(View.GONE);
-                } else {
-                    int total_series = Integer.parseInt("0"+(String) mediaInfo.get("total_series"));
-                    CreateTvLayout(total_series);
-                    keyLayoutT.setVisibility(View.VISIBLE);
-                    keyLayoutT.requestFocus();
+            if (keyLayoutT.getVisibility() == View.VISIBLE) {
+                keyLayoutT.setVisibility(View.GONE);
+            } else {
+                int total_series = Integer.parseInt("0"+(String) mediaInfo.get("total_series"));
+                CreateTvLayout(total_series);
+                keyLayoutT.setVisibility(View.VISIBLE);
+                keyLayoutT.requestFocus();
+            }
+            }
+        });
+
+        if (myApp.isColection(media_id)){
+            colection.setText("取消收藏");
+        }else{
+            colection.setText("收藏");
+        }
+
+        colection.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (media_id != null && !media_id.isEmpty()) {
+                    if (myApp.isColection(media_id)){
+                        myApp.delColection(media_id);
+                        colection.setText("收藏");
+                        Toast.makeText(context, "已经取消收藏", Toast.LENGTH_SHORT).show();
+                    }else{
+                        myApp.addColection(mediaInfo);
+                        colection.setText("取消收藏");
+                        Toast.makeText(context, "已经收藏完成", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -169,11 +195,11 @@ public class MediaInfoActivity  extends Activity {
         View.OnFocusChangeListener chooseHide = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    if (keyLayoutT.getVisibility() == View.VISIBLE) {
-                        keyLayoutT.setVisibility(View.GONE);
-                    }
+            if (hasFocus){
+                if (keyLayoutT.getVisibility() == View.VISIBLE) {
+                    keyLayoutT.setVisibility(View.GONE);
                 }
+            }
             }
         };
         play.setOnFocusChangeListener(chooseHide);
@@ -200,7 +226,7 @@ public class MediaInfoActivity  extends Activity {
                     URL picUrl = new URL(Config.inmageUrlPrefix+(String) mediaInfo.get("image"));
                     //Bitmap bitmap = BitmapFactory.decodeStream(picUrl.openStream());
                     Bitmap bitmap = myApp.getBitmap(picUrl.toString());
-                    mediaInfo.put("image",bitmap);
+                    mediaInfo.put("image_bm",bitmap);
                 }
                 //url for name
                 jsonArray = json.getJSONArray("mediaUrl");
@@ -360,6 +386,7 @@ public class MediaInfoActivity  extends Activity {
             @Override
             public void onClick(View v) {
                 if (media_id != null && !media_id.isEmpty()) {
+                    myApp.addHistory(mediaInfo);
                     Intent intent = new Intent();
                     intent.setClass(MediaInfoActivity.this, VodActivity.class);
                     intent.putExtra("MEDIA_ID", (String) mediaInfo.get("media_id"));

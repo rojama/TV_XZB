@@ -100,27 +100,19 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="300dp"
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="0dp"
-                android:layout_marginTop="0dp"
-                android:background="@android:color/background_light"
-                android:divider="#ddd"
-                android:dividerHeight="1px"
-                android:footerDividersEnabled="false"
-                android:headerDividersEnabled="false"
-                android:listSelector="@drawable/detail_list_item_bg">
-
-
-            </ListView>
-        </LinearLayout>
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="3"
+            android:background="@android:color/background_light"
+            android:divider="#ddd"
+            android:dividerHeight="1px"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:listSelector="@drawable/detail_list_item_bg"></ListView>
 
         <GridView
             android:id="@+id/gridView"
@@ -128,13 +120,14 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_dark"
             android:columnWidth="150dp"
             android:gravity="center"
             android:horizontalSpacing="10dp"
             android:numColumns="auto_fit"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp"
-            android:background="@android:color/background_dark" />
+            android:verticalSpacing="10dp" />
 
     </LinearLayout>
 
