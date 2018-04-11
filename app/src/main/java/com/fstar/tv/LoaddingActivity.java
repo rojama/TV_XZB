@@ -69,9 +69,6 @@ public class LoaddingActivity  extends Activity {
         new Thread(){
             @Override
             public void run() {
-                //检查网络连接
-                checkNetworkInfo();
-
                 //初始化界面
                 initData();
                 super.run();
@@ -98,6 +95,9 @@ public class LoaddingActivity  extends Activity {
                     appHandler.sendMessage(message);
                     return;
                 }
+            }else{
+                //检查网络连接
+                checkNetworkInfo();
             }
 
 
