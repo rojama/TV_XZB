@@ -15,7 +15,7 @@
         android:paddingTop="5dp"
         android:text=""
         android:textColor="#00408d"
-        android:textSize="35sp" />
+        android:textSize="34sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,73 +25,80 @@
 
         <Button
             android:id="@+id/title_button1"
-            android:layout_width="175dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/detail_title_button_bg"
             android:text=""
             android:textAlignment="center"
             android:textColor="@drawable/detail_title_button_color"
-            android:textSize="35sp" />
+            android:textSize="32sp" />
 
         <Button
             android:id="@+id/title_button2"
-            android:layout_width="175dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/detail_title_button_bg"
             android:text=""
             android:textAlignment="center"
             android:textColor="@drawable/detail_title_button_color"
-            android:textSize="35sp" />
+            android:textSize="32sp" />
 
         <Button
             android:id="@+id/title_button3"
-            android:layout_width="175dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/detail_title_button_bg"
             android:text=""
             android:textAlignment="center"
             android:textColor="@drawable/detail_title_button_color"
-            android:textSize="35sp" />
+            android:textSize="32sp" />
 
         <Button
             android:id="@+id/title_button4"
-            android:layout_width="175dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/detail_title_button_bg"
             android:text=""
             android:textAlignment="center"
             android:textColor="@drawable/detail_title_button_color"
-            android:textSize="35sp" />
+            android:textSize="32sp" />
 
         <Button
             android:id="@+id/title_button5"
-            android:layout_width="175dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/detail_title_button_bg"
             android:text=""
             android:textAlignment="center"
             android:textColor="@drawable/detail_title_button_color"
-            android:textSize="35sp" />
+            android:textSize="32sp" />
 
         <Button
             android:id="@+id/title_button6"
-            android:layout_width="175dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/detail_title_button_bg"
             android:text=""
             android:textAlignment="center"
             android:textColor="@drawable/detail_title_button_color"
-            android:textSize="35sp" />
+            android:textSize="32sp" />
 
         <Button
             android:id="@+id/search_button"
-            android:layout_width="175dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/detail_title_button_bg"
             android:text="搜索"
             android:textAlignment="center"
             android:textColor="#7EC0EE"
-            android:textSize="35sp" />
+            android:textSize="32sp" />
 
     </LinearLayout>
 
