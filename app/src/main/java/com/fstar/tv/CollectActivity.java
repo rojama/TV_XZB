@@ -89,7 +89,6 @@ public class CollectActivity extends Activity {
             }
         });
 
-
         //colection grid init
         saImageItems = new SimpleAdapter(this,
                 lstImageItem_colection,//数据来源
@@ -130,6 +129,7 @@ public class CollectActivity extends Activity {
             @Override
             public void onClick(View v) {
                 myApp.clearHistory();
+                initData(lstImageItem_history, 1);
             }
         });
 
@@ -225,5 +225,6 @@ public class CollectActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 }
