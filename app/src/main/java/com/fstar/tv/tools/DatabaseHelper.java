@@ -16,7 +16,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "media_id text primary key , " +
             "image text, " +
             "media_name text," +
-            "time text)";
+            "time text," +
+            "last_series int," +
+            "last_time int)";
 
     public static final String DROP_COLECTION = "drop table colection";
     public static final String DROP_HISTORY = "drop table history";

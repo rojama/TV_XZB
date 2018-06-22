@@ -46,6 +46,7 @@ public class MediaInfoActivity  extends Activity {
 
     private String media_id;
     private String media_name;
+    private HashMap last_paly;
 
     private Handler appHandler;
 
@@ -106,6 +107,13 @@ public class MediaInfoActivity  extends Activity {
 //        // 综艺选集软键布局
 //        keyLayoutA = (LinearLayout) findViewById(R.id.details_key_arts);
 
+        //查询上次观看记录
+        last_paly = myApp.getHistroy(media_id);
+        if (!last_paly.isEmpty()){
+            int last_series = (int) last_paly.get("last_series");
+            play.setText("继续第"+last_series+"集");
+        }
+
         appHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -144,11 +152,20 @@ public class MediaInfoActivity  extends Activity {
             @Override
             public void onClick(View v) {
             if (media_id != null && !media_id.isEmpty()) {
-                myApp.addHistory(mediaInfo);
+                //myApp.addHistory(mediaInfo);
                 Intent intent = new Intent();
                 intent.setClass(MediaInfoActivity.this, VodActivity.class);
-                intent.putExtra("MEDIA_ID", (String) mediaInfo.get("media_id"));
-                intent.putExtra("MEDIA_NAME", (String) mediaInfo.get("media_name"));
+                //intent.putExtra("MEDIA_ID", (String) mediaInfo.get("media_id"));
+                //intent.putExtra("MEDIA_NAME", (String) mediaInfo.get("media_name"));
+                mediaInfo.put("series_no", 1);
+                last_paly = myApp.getHistroy(media_id);
+                if (last_paly != null && !last_paly.isEmpty()){
+                    int last_series = (int) last_paly.get("last_series");
+                    int last_time = (int) last_paly.get("last_time");
+                    mediaInfo.put("series_no", last_series);
+                    mediaInfo.put("last_time", last_time);
+                }
+                intent.putExtra("PLAY_INFO", mediaInfo);
                 startActivity(intent);
             }
             }
@@ -207,6 +224,18 @@ public class MediaInfoActivity  extends Activity {
         colection.setOnFocusChangeListener(chooseHide);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        last_paly = myApp.getHistroy(media_id);
+        if (!last_paly.isEmpty()){
+            int last_series = (int) last_paly.get("last_series");
+            play.setText("继续第"+last_series+"集");
+        }
+    }
+
+
     private void initData() {
         try {
             String processBO = "com.fstar.cms.TVServerBO";
@@ -236,6 +265,7 @@ public class MediaInfoActivity  extends Activity {
                     subdata = (HashMap<String, Object>) Utils.parserToMap(sub.toString());
                     mediaName.put((String)subdata.get("series_no"),subdata.get("series_name"));
                 }
+
 
                 //通知更新标题和列表
                 Message message = new Message();
@@ -386,12 +416,15 @@ public class MediaInfoActivity  extends Activity {
             @Override
             public void onClick(View v) {
                 if (media_id != null && !media_id.isEmpty()) {
-                    myApp.addHistory(mediaInfo);
+                    //myApp.addHistory(mediaInfo);
                     Intent intent = new Intent();
                     intent.setClass(MediaInfoActivity.this, VodActivity.class);
-                    intent.putExtra("MEDIA_ID", (String) mediaInfo.get("media_id"));
-                    intent.putExtra("MEDIA_NAME", (String) mediaInfo.get("media_name"));
-                    intent.putExtra("SERIES_NO", (Integer) v.getTag());
+                    //intent.putExtra("MEDIA_ID", (String) mediaInfo.get("media_id"));
+                    //intent.putExtra("MEDIA_NAME", (String) mediaInfo.get("media_name"));
+                    //intent.putExtra("SERIES_NO", (Integer) v.getTag());
+                    mediaInfo.put("series_no", (Integer) v.getTag());
+                    mediaInfo.remove("last_time");
+                    intent.putExtra("PLAY_INFO", mediaInfo);
                     startActivity(intent);
                 }
             }
@@ -405,11 +438,11 @@ public class MediaInfoActivity  extends Activity {
                     String text = "第" + tag + "集:" + name;
                     if (toast != null) {
                         toast.setText(text);
-                        toast.setDuration(Toast.LENGTH_LONG);
+                        toast.setDuration(Toast.LENGTH_SHORT);
                         toast.show();
                     } else
                     {
-                        toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+                        toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                     btn.setText(text);

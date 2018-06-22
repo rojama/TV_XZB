@@ -27,7 +27,7 @@ public class MyApp extends Application{
         //初始化图片缓存
         memoryCache=new ImageMemoryCache(this);
         fileCache=new ImageFileCache();
-        dbHelper = new DatabaseHelper(this, "TV.db", null, 1);
+        dbHelper = new DatabaseHelper(this, "TV.db", null, 2);
         db = dbHelper.getWritableDatabase();
     }
 
@@ -127,8 +127,27 @@ public class MyApp extends Application{
     //记录观看历史
     public void addHistory(HashMap<String, Object> mediaInfo){
         db.execSQL("delete from history where media_id=?", new Object[]{mediaInfo.get("media_id")});
-        db.execSQL("insert into history(media_id , image, media_name, time) values(?, ? ,? ,? )"
-                , new Object[]{mediaInfo.get("media_id"), mediaInfo.get("image"), mediaInfo.get("media_name"), new Date().toString()});
+        db.execSQL("insert into history(media_id , image, media_name, last_series, time) values(?, ? ,? ,? ,?)"
+                , new Object[]{mediaInfo.get("media_id"), mediaInfo.get("image"), mediaInfo.get("media_name"), mediaInfo.get("series_no"), new Date().toString()});
+    }
+
+    public void updateLastTime(String media_id, int last_time){
+        db.execSQL("update history set last_time=? where media_id=?", new Object[]{last_time, media_id});
+        System.out.println("play to "+last_time);
+    }
+
+    public HashMap getHistroy(String media_id){
+        Cursor cursor =  db.rawQuery("select * from history where media_id=?", new String[]{media_id});
+        HashMap map = new HashMap();
+        while (cursor.moveToNext())
+        {
+            int last_series =  cursor.getInt(cursor.getColumnIndex("last_series"));
+            int last_time =  cursor.getInt(cursor.getColumnIndex("last_time"));
+            map.put("last_series", last_series);
+            map.put("last_time", last_time);
+        }
+        cursor.close();
+        return map;
     }
 
     //清空历史记录
