@@ -1,7 +1,6 @@
 package com.fstar.tv;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -12,14 +11,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -199,6 +196,9 @@ public class DetailActivity extends Activity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
+                        Bundle bundleData = msg.getData();
+                        list.clear();
+                        list.addAll((ArrayList<String>) bundleData.getSerializable("list"));
                         ((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
 
                         // 恢复选择项
@@ -484,8 +484,10 @@ public class DetailActivity extends Activity {
                 }else{
                     now_Title = "";
                 }
-                list.clear();
+
+                ArrayList<String> list = new ArrayList<String>();
                 idList.clear();
+
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject sub = (JSONObject) jsonArray.get(i);
                     HashMap mm = (HashMap<String, Object>) Utils.parserToMap(sub.toString());
@@ -501,8 +503,12 @@ public class DetailActivity extends Activity {
                     pathList.push(superMap);
                 }
 
+
                 //通知更新标题和列表
                 Message message = new Message();
+                Bundle bundleData = new Bundle();
+                bundleData.putSerializable("list",list);
+                message.setData(bundleData);
                 message.what = 1;
                 appHandler.sendMessage(message);
                 message = new Message();

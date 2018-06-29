@@ -41,6 +41,7 @@
         <activity android:name=".VodActivity"></activity>
         <activity android:name=".SearchActivity"></activity>
         <activity android:name=".CollectActivity"></activity>
+        <activity android:name=".PayActivity"></activity>
         <receiver android:name=".BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

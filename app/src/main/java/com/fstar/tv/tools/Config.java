@@ -14,8 +14,9 @@ public class Config {
 //    static public String serverBaseUrl = "http://222.76.210.151:8085/FStarWeb";
 
     //local
-    //static public String serverBaseUrl = "http://192.168.0.103:8080/Fstar_war";
+    //static public String serverBaseUrl = "http://10.1.254.89:8082/Fstar_war_exploded";
 
     static public String inmageUrlPrefix = serverBaseUrl
             +"/cm?ProcessBO=com.fstar.cms.TVServerImageBO&ProcessMETHOD=getImage";
+
 }

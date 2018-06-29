@@ -179,8 +179,17 @@
                         android:id="@+id/details_colection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
                         android:text="收藏"
                         android:textSize="35px" />
+
+                    <TextView
+                        android:id="@+id/textViewVIP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

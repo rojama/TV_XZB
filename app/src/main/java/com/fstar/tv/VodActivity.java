@@ -1,9 +1,10 @@
 package com.fstar.tv;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,8 +21,8 @@ import com.fstar.tv.tools.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -103,14 +104,33 @@ public class VodActivity  extends Activity {
                             String url_prefix = (String) mediaInfo.get(0).get("url_prefix");
                             String video_url = url_prefix + (String) mediaInfo.get(0).get("full");
                             String series_name = (String) mediaInfo.get(0).get("series_name");
-                            if (!series_name.isEmpty()){
-                                series_name = ":"+series_name;
+                            if (series_name == null){
+                                series_name = "";
                             }
+
+                            boolean vip = false;
+                            if (mediaInfo.get(0).get("vip") != null){
+                                vip = Boolean.valueOf((String)  mediaInfo.get(0).get("vip"));
+                            }
+
+                            //判断vip
+                            if (vip){
+                                //检查vip是否有效
+                                if (myApp.getVipDate()==null || myApp.getVipDate().before(new Date())){
+                                    //重新访问数据库
+                                    reflashVip();
+                                    return;
+                                }
+                            }
+
                             System.out.println("prepar to play :" + video_url);
                             mVideoView.setVideoURI(Uri.parse(video_url));
                             mVideoView.requestFocus();
                             mVideoView.start();
 
+                            if (!series_name.isEmpty()){
+                                series_name = ":"+series_name;
+                            }
                             String tip = "播放第"+series_no+"集"+series_name;
 
                             //跳转到上次播放位置
@@ -132,6 +152,34 @@ public class VodActivity  extends Activity {
                     case 2:  //记录播放进度
                         runPalyTime = true;
                         appHandler.postDelayed(playTime, 10000);
+                        break;
+                    case 3:
+                        //还是没有vip权限
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        final String[] items = {"包月会员（20元）", "包季会员（50元）", "包年会员（180元）"};
+                        final Double[] price = {20.0, 50.0, 180.0};
+                        final int[] attach = {1, 3, 12};
+                        builder.setIcon(R.drawable.ic_launcher);
+                        builder.setTitle("请选择购买方式");
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.setClass(VodActivity.this, PayActivity.class);
+                                intent.putExtra("PayDesc", items[which]);
+                                intent.putExtra("PayPrice", price[which]);
+                                intent.putExtra("PayId", which);
+                                intent.putExtra("Attach", String.valueOf(attach[which]));
+                                startActivity(intent);
+                            }
+                        });
+                        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                context.onBackPressed();
+                            }
+                        });
+                        builder.show();
                         break;
 //                    case 3:
 //                        rxByte = TrafficStats.getTotalRxBytes();
@@ -183,6 +231,25 @@ public class VodActivity  extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void reflashVip(){
+        //init data
+        new Thread() {
+            @Override
+            public void run() {
+                myApp.reflashVipDate();
+                Message message = new Message();
+                if (myApp.getVipDate()==null || myApp.getVipDate().before(new Date())){
+                    message.what = 3;
+                }else{
+                    message.what = 1;
+                }
+                appHandler.sendMessage(message);
+                super.run();
+            }
+        }.start();
+
     }
 
     private boolean runPalyTime = true;

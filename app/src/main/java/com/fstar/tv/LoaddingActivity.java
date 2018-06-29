@@ -1,12 +1,8 @@
 package com.fstar.tv;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -14,26 +10,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fstar.tv.tools.Config;
-import com.fstar.tv.tools.ImageFileCache;
 import com.fstar.tv.tools.Utils;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Rojama on 16/1/12.
@@ -43,6 +30,8 @@ public class LoaddingActivity  extends Activity {
     private ImageView loddingimg;
     private Intent intent;
     private Handler appHandler;
+    private MyApp myApp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +40,8 @@ public class LoaddingActivity  extends Activity {
         loddingimg = (ImageView) findViewById(R.id.imageView);
         intent = new Intent();
         context = this;
+        myApp = (MyApp) getApplication(); //获得自定义的应用程序MyApp
+
         appHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -81,25 +72,27 @@ public class LoaddingActivity  extends Activity {
     private void initData() {
         try {
             TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            String deviceId = getLocalMacAddress()+"-"+tm.getDeviceId()+"-"+android.os.Build.SERIAL;
+            String deviceId = Utils.getLocalMac(context)+"-"+Utils.getIMIEStatus(context)+"-"+Utils.getAndroidId(context);
+            myApp.setDeviceId(deviceId);
             String processBO = "com.fstar.cms.TVServerBO";
             String processMETHOD = "parseDeviceId";
             String url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
-                    + processBO + "&DeviceId=" + deviceId;
+                    + processBO + "&DeviceId=" + deviceId + "&history=Y";;
             JSONObject json = Utils.readHttpJSON(url);
             if (json != null) {
-                boolean ok = json.getBoolean("ok");
-                if (!ok){
-                    Message message = new Message();
-                    message.what = 2;
-                    appHandler.sendMessage(message);
-                    return;
+                //记录设备的vip时间
+                if(json.has("validity")) {
+                    String validity = json.getString("validity");
+                    if (validity != null && !validity.isEmpty()) {
+                        SimpleDateFormat formatdateD = new SimpleDateFormat("yyyy-MM-dd");
+                        myApp.setVipDate(formatdateD.parse(validity));
+                    }
+                    myApp.setDeviceId(json.getString("device_info"));
                 }
             }else{
                 //检查网络连接
                 checkNetworkInfo();
             }
-
 
             processMETHOD = "getSetting";
             url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
@@ -125,12 +118,6 @@ public class LoaddingActivity  extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String getLocalMacAddress() {
-        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = wifi.getConnectionInfo();
-        return info.getMacAddress();
     }
 
 

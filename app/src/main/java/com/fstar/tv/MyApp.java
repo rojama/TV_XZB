@@ -6,11 +6,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.fstar.tv.tools.Config;
+import com.fstar.tv.tools.CrashHandler;
 import com.fstar.tv.tools.DatabaseHelper;
 import com.fstar.tv.tools.ImageFileCache;
 import com.fstar.tv.tools.ImageGetFromHttp;
 import com.fstar.tv.tools.ImageMemoryCache;
+import com.fstar.tv.tools.Utils;
 
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,10 +26,17 @@ public class MyApp extends Application{
     private ImageFileCache fileCache;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
+    private Date vipDate;
+    private String deviceId = "";
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //在这里为应用设置异常处理程序，然后我们的程序才能捕获未处理的异常
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
+
         //初始化图片缓存
         memoryCache=new ImageMemoryCache(this);
         fileCache=new ImageFileCache();
@@ -31,6 +44,43 @@ public class MyApp extends Application{
         db = dbHelper.getWritableDatabase();
     }
 
+    public Date getVipDate() {
+        return vipDate;
+    }
+
+    public void setVipDate(Date vipDate) {
+        this.vipDate = vipDate;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    //重新判断vip状态
+    public void reflashVipDate(){
+        try {
+            String processBO = "com.fstar.cms.TVServerBO";
+            String processMETHOD = "parseDeviceId";
+            String url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
+                    + processBO + "&DeviceId=" + deviceId + "&history=N";
+            JSONObject json = Utils.readHttpJSON(url);
+            if (json != null) {
+                //记录设备的vip时间
+                String validity = json.getString("validity");
+                if (validity != null && !validity.isEmpty()){
+                    SimpleDateFormat formatdateD=new SimpleDateFormat("yyyy-MM-dd");
+                    setVipDate(formatdateD.parse(validity));
+                }
+                setDeviceId(json.getString("device_info"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public Bitmap getBitmap(String url) {
         // 从内存缓存中获取图片

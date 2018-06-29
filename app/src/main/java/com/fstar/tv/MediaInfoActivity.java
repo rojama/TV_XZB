@@ -3,7 +3,6 @@ package com.fstar.tv;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,14 +21,15 @@ import android.widget.Toast;
 import com.fstar.tv.adapter.AllPagesAdapter;
 import com.fstar.tv.adapter.DetailsKeyTabAdapter;
 import com.fstar.tv.tools.Config;
-import com.fstar.tv.tools.DatabaseHelper;
 import com.fstar.tv.tools.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,6 +43,7 @@ public class MediaInfoActivity  extends Activity {
     private TextView introduce, area, type, year;
     private ImageView poster, shadow;
     private LinearLayout keyLayoutT;
+    private TextView vip;
 
     private String media_id;
     private String media_name;
@@ -51,7 +52,8 @@ public class MediaInfoActivity  extends Activity {
     private Handler appHandler;
 
     private HashMap<String,Object> mediaInfo = new HashMap<String,Object>();
-    private HashMap<String,Object> mediaName = new HashMap<String,Object>();
+    private HashMap<Integer, String> mediaName = new HashMap<Integer, String>();
+    private HashMap<Integer,Boolean> mediaVip = new HashMap<Integer,Boolean>();
     private MyApp myApp;
 
     private Toast toast;
@@ -61,7 +63,6 @@ public class MediaInfoActivity  extends Activity {
 
         super.onCreate(savedInstanceState);
         context = this;
-
         setContentView(R.layout.activity_media_info);
 
         myApp = (MyApp) getApplication(); //获得自定义的应用程序MyApp
@@ -106,6 +107,8 @@ public class MediaInfoActivity  extends Activity {
         keyLayoutT = (LinearLayout) findViewById(R.id.details_key_tv);
 //        // 综艺选集软键布局
 //        keyLayoutA = (LinearLayout) findViewById(R.id.details_key_arts);
+
+        vip = (TextView) findViewById(R.id.textViewVIP);
 
         //查询上次观看记录
         last_paly = myApp.getHistroy(media_id);
@@ -233,8 +236,15 @@ public class MediaInfoActivity  extends Activity {
             int last_series = (int) last_paly.get("last_series");
             play.setText("继续第"+last_series+"集");
         }
-    }
 
+        //更新VIP状态
+        if (myApp.getVipDate()==null || myApp.getVipDate().before(new Date())){
+            //vip.setText("请购买VIP");
+        }else{
+            SimpleDateFormat formatdateD=new SimpleDateFormat("yyyy年MM月dd日");
+            vip.setText("VIP有效期到"+ formatdateD.format(myApp.getVipDate()));
+        }
+    }
 
     private void initData() {
         try {
@@ -263,7 +273,13 @@ public class MediaInfoActivity  extends Activity {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject sub = (JSONObject) jsonArray.get(i);
                     subdata = (HashMap<String, Object>) Utils.parserToMap(sub.toString());
-                    mediaName.put((String)subdata.get("series_no"),subdata.get("series_name"));
+                    int series_no = Integer.valueOf((String)subdata.get("series_no"));
+                    mediaName.put(series_no, (String)subdata.get("series_name"));
+                    if (subdata.get("vip") != null) {
+                        mediaVip.put(series_no, Boolean.valueOf((String) subdata.get("vip")));
+                    }else{
+                        mediaVip.put(series_no,false);
+                    }
                 }
 
 
@@ -411,6 +427,18 @@ public class MediaInfoActivity  extends Activity {
         btn.setText("第" + index + "集");
         btn.setTextSize(25);
         btn.setTag(index);
+        btn.getBackground().setAlpha(100);
+        btn.setTextColor(Color.WHITE);
+
+        if (!mediaVip.containsKey(index)){
+            btn.setTextColor(Color.GRAY);
+            return btn;   //没有维护地址的按钮是没有绑定事件的
+        }
+        //本季收费
+        if(mediaVip.get(index)){
+            btn.setTextColor(Color.YELLOW);
+        }
+
         // 跳转到播放器
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -432,8 +460,8 @@ public class MediaInfoActivity  extends Activity {
         btn.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View arg0, boolean hasFocus) {
-                String tag = String.valueOf((int) arg0.getTag());
-                String name = (String) mediaName.get(tag);
+                int tag = (int) arg0.getTag();
+                String name = mediaName.get(tag);
                 if(hasFocus && !name.isEmpty()){
                     String text = "第" + tag + "集:" + name;
                     if (toast != null) {
@@ -451,8 +479,7 @@ public class MediaInfoActivity  extends Activity {
                 }
             }
         });
-        btn.getBackground().setAlpha(100);
-        btn.setTextColor(Color.WHITE);
+
         return btn;
     }
 

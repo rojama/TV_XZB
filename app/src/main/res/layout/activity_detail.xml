@@ -94,8 +94,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/detail_title_button_bg"
-            android:text="搜索"
+            android:background="@drawable/detail_title_search_bg"
+            android:text=""
             android:textAlignment="center"
             android:textColor="#7EC0EE"
             android:textSize="32sp" />

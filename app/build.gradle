@@ -8,8 +8,8 @@ android {
         applicationId "com.fstar.tv"
         minSdkVersion 11
         targetSdkVersion 22
-        versionCode 43
-        versionName "1.10.1"
+        versionCode 45
+        versionName "1.12"
     }
     buildTypes {
         release {
@@ -22,4 +22,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation ('com.android.support:support-v4:13.0.0')
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation group: 'commons-net', name: 'commons-net', version: '3.1'
+
 }

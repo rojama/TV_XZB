@@ -119,5 +119,7 @@
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: com.android.support:support-v4:13.0.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: commons-net:commons-net:3.1@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.zxing:core:3.3.0@jar" level="project" />
   </component>
 </module>

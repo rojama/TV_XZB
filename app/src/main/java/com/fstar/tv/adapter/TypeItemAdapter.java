@@ -61,7 +61,7 @@ public class TypeItemAdapter extends BaseAdapter {
         int screenWidth = parent.getWidth();
         int screenHeight = parent.getHeight();
 
-        System.out.println(screenWidth + "/" + screenHeight);
+        //System.out.println(screenWidth + "/" + screenHeight);
 
         ImageView typeItemImage_bg = (ImageView) itemView.findViewById(R.id.typeItemImage_bg);
         ImageView typeItemImage_fg = (ImageView) itemView.findViewById(R.id.typeItemImage_fg);
