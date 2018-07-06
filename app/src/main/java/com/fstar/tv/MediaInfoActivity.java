@@ -212,19 +212,20 @@ public class MediaInfoActivity  extends Activity {
         });
 
         //获取焦点后将选集面板隐藏
-        View.OnFocusChangeListener chooseHide = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus){
-                if (keyLayoutT.getVisibility() == View.VISIBLE) {
-                    keyLayoutT.setVisibility(View.GONE);
-                }
-            }
-            }
-        };
-        play.setOnFocusChangeListener(chooseHide);
-        choose.setOnFocusChangeListener(chooseHide);
-        colection.setOnFocusChangeListener(chooseHide);
+//        View.OnFocusChangeListener chooseHide = new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//            if (hasFocus){
+//                if (keyLayoutT.getVisibility() == View.VISIBLE) {
+//                    keyLayoutT.setVisibility(View.GONE);
+//                }
+//            }
+//            }
+//        };
+//
+//        play.setOnFocusChangeListener(chooseHide);
+//        choose.setOnFocusChangeListener(chooseHide);
+//        colection.setOnFocusChangeListener(chooseHide);
     }
 
     @Override

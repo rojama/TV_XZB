@@ -21,6 +21,7 @@ import com.fstar.tv.tools.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +45,10 @@ public class VodActivity  extends Activity {
     private MediaController mMediaController;
     private HashMap<String,Object> play_info;
     private ArrayList<HashMap<String,Object>> mediaInfo = new ArrayList<HashMap<String,Object>>();
+    private String[] products;
+    private String[] items;
+    private String[] bodys;
+    private Double[] price;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -156,9 +161,6 @@ public class VodActivity  extends Activity {
                     case 3:
                         //还是没有vip权限
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        final String[] items = {"包月会员（20元）", "包季会员（50元）", "包年会员（180元）"};
-                        final Double[] price = {20.0, 50.0, 180.0};
-                        final int[] attach = {1, 3, 12};
                         builder.setIcon(R.drawable.ic_launcher);
                         builder.setTitle("请选择购买方式");
                         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -166,10 +168,9 @@ public class VodActivity  extends Activity {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent();
                                 intent.setClass(VodActivity.this, PayActivity.class);
-                                intent.putExtra("PayDesc", items[which]);
+                                intent.putExtra("PayId", products[which]);
+                                intent.putExtra("PayDesc", bodys[which]);
                                 intent.putExtra("PayPrice", price[which]);
-                                intent.putExtra("PayId", which);
-                                intent.putExtra("Attach", String.valueOf(attach[which]));
                                 startActivity(intent);
                             }
                         });
@@ -201,6 +202,39 @@ public class VodActivity  extends Activity {
     }
 
     private void initData() {
+        try {
+            String processBO = "com.fstar.cms.TVServerBO";
+            String processMETHOD = "getProduct";
+            String url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
+                    + processBO;
+            JSONObject json = Utils.readHttpJSON(url);
+            if (json != null) {
+                JSONArray jsonArray = json.getJSONArray("Products");
+                if (jsonArray.length() == 0) {
+                    this.finish();
+                    return;
+                }
+
+                bodys = new String[jsonArray.length()];
+                products = new String[jsonArray.length()];
+                items = new String[jsonArray.length()];
+                price = new Double[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject sub = (JSONObject) jsonArray.get(i);
+                    double cnyprice = sub.getInt("total_fee")/100.00;
+                    cnyprice = new BigDecimal(cnyprice).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                    products[i] = sub.getString("product_id");
+                    price[i] = cnyprice;
+                    items[i] = sub.getString("body")+"("+cnyprice+"元)";
+                    bodys[i] = sub.getString("body");
+                }
+            }else{
+                this.finish();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             String processBO = "com.fstar.cms.TVServerBO";
             String processMETHOD = "parseMediaUrl";
@@ -252,10 +286,11 @@ public class VodActivity  extends Activity {
 
     }
 
+    //记录播放进度
     private boolean runPalyTime = true;
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         runPalyTime = false;
         appHandler.removeCallbacks(playTime);
     }
@@ -269,11 +304,20 @@ public class VodActivity  extends Activity {
                 appHandler.postDelayed(playTime, 10000);
             }
         }
-
-        public void stop(){
-
-        }
     };
+
+    //返回时重新判断vip
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        new Thread() {
+            @Override
+            public void run() {
+                initData();
+                super.run();
+            }
+        }.start();
+    }
 
 //    private long rxByte, currentTime;
 //    private Runnable speed = new Runnable() {

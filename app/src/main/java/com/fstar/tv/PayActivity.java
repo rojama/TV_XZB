@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fstar.tv.tools.Config;
 import com.fstar.tv.tools.Utils;
@@ -27,8 +28,8 @@ public class PayActivity extends Activity {
     String in_payDesc;
     double in_PayPrice;
     String in_PayId;
-    String in_Attach;
 
+    String out_trade_no;
     String code_url;
 
     @Override
@@ -43,7 +44,6 @@ public class PayActivity extends Activity {
         in_payDesc = intent.getStringExtra("PayDesc");
         in_PayPrice = intent.getDoubleExtra("PayPrice" , 0);
         in_PayId = intent.getStringExtra("PayId");
-        in_Attach = intent.getStringExtra("Attach");
 
         //get layout ui
         barCode = (ImageView) findViewById(R.id.BarCode);
@@ -62,6 +62,9 @@ public class PayActivity extends Activity {
                         barCode.setImageBitmap(bitmap);
                         break;
                     case 2:
+                        Toast toast = Toast.makeText(context, "支付完成，请返回后继续播放", Toast.LENGTH_LONG);
+                        toast.show();
+                        context.onBackPressed();
                         break;
                 }
                 super.handleMessage(msg);
@@ -86,15 +89,13 @@ public class PayActivity extends Activity {
             String processMETHOD = "get_code_url";
             String url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
                     + processBO;
-            url += "&body=" + in_payDesc;
-            url += "&total_fee=" + ((int)in_PayPrice*100); //折合成分来计算
             url += "&device_info=" + myApp.getDeviceId();
             url += "&product_id=" + in_PayId;
-            url += "&attach=" + in_Attach; //付款月份数目
             JSONObject json = Utils.readHttpJSON(url);
             if (json != null) {
                 code_url = json.getString("code_url");
-
+                out_trade_no = json.getString("out_trade_no");
+                appHandler.postDelayed(checkPay, 2000);
                 Message message = new Message();
                 message.what = 1;
                 appHandler.sendMessage(message);
@@ -102,5 +103,48 @@ public class PayActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean runCheckpay = true;
+    private Runnable checkPay = new Runnable() {
+        @Override
+        public void run() {
+
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        String processBO = "com.fstar.cms.WXBO";
+                        String processMETHOD = "get_deal";
+                        String url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
+                                + processBO;
+                        url += "&out_trade_no=" + out_trade_no;
+                        JSONObject json = Utils.readHttpJSON(url);
+                        if (json != null) {
+                            String transaction_id = json.getString("transaction_id");
+                            if (transaction_id != null && !transaction_id.isEmpty()){
+                                runCheckpay = false;
+                                Message message = new Message();
+                                message.what = 2;
+                                appHandler.sendMessage(message);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (runCheckpay) {
+                        appHandler.postDelayed(checkPay, 2000);
+                    }
+                    super.run();
+                }
+            }.start();
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        runCheckpay = false;
+        appHandler.removeCallbacks(checkPay);
     }
 }
