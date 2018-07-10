@@ -9,6 +9,6 @@
         android:layout_height="fill_parent"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/loadding_2"
+        android:background="@drawable/loadding_1"
         android:visibility="invisible" />
 </LinearLayout>
