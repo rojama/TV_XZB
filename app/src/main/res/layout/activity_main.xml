@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/home_bg"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
 
     <ImageView
@@ -12,10 +12,101 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_weight="1"
+        android:layout_weight="1.1"
+        android:paddingLeft="33dp"
+        android:paddingTop="17dp"
+        android:scaleType="fitStart"
         android:src="@drawable/home_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.2"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        android:paddingLeft="33dp"
+        android:paddingRight="33dp"
+        android:paddingTop="5dp">
+
+        <ImageButton
+            android:id="@+id/home_b1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b1" />
+
+        <ImageButton
+            android:id="@+id/home_b2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b2" />
+
+        <ImageButton
+            android:id="@+id/home_b3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b3" />
+
+        <ImageButton
+            android:id="@+id/home_b_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b_setting" />
+
+        <ImageButton
+            android:id="@+id/home_b_my"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b_my" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:src="@android:color/transparent" />
+
+        <ImageButton
+            android:id="@+id/home_b_login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b_login" />
+
+        <ImageButton
+            android:id="@+id/home_b_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b_collect" />
+
+        <ImageButton
+            android:id="@+id/home_b_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#00000000"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/home_b_search" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +118,7 @@
             android:id="@+id/imageButton1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:src="@drawable/left"
@@ -40,14 +131,14 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.1"
             android:gravity="bottom"
-            android:spacing="10dp" />
+            android:spacing="20dp" />
 
         <ImageView
             android:id="@+id/imageButton2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:src="@drawable/right"
             android:visibility="visible" />
@@ -59,6 +150,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.2"
+        android:padding="20dp"
         android:src="@drawable/home_title" />
 
 </LinearLayout>

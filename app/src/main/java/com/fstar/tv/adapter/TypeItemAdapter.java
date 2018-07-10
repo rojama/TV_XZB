@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.fstar.tv.R;
@@ -56,6 +57,7 @@ public class TypeItemAdapter extends BaseAdapter {
         }
         LayoutInflater inflater = context.getLayoutInflater();
         View itemView = inflater.inflate(R.layout.main_type_item, null);
+        itemView.setFocusable(true);
         Map info = list.get(position % list.size());
 
         int screenWidth = parent.getWidth();
@@ -66,16 +68,17 @@ public class TypeItemAdapter extends BaseAdapter {
         ImageView typeItemImage_bg = (ImageView) itemView.findViewById(R.id.typeItemImage_bg);
         ImageView typeItemImage_fg = (ImageView) itemView.findViewById(R.id.typeItemImage_fg);
 
-        float bigWidth = 1.5f;  //放大倍数
+        float bigWidth = 1.25f;  //放大倍数
         float bigHeight = 1.25f;  //放大倍数
 
-        float spacing = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,60,context.getResources().getDisplayMetrics());
+        float spacing = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,120,context.getResources().getDisplayMetrics());
 
         int nomorlWidth = (int)((screenWidth-spacing)/(6+bigWidth));  //60=6*spacing
         int nomorHeight = (int)(screenHeight/bigHeight);
 
         //放大
         if (position == selectItem){
+            itemView.requestFocus();
             typeItemImage_bg.setImageResource(R.drawable.button_bg_h);
         	typeItemImage_fg.setImageBitmap((android.graphics.Bitmap) info.get("IMAGE_SEL"));
             typeItemImage_bg.getLayoutParams().width = (int)(nomorlWidth*bigWidth);
@@ -101,7 +104,7 @@ public class TypeItemAdapter extends BaseAdapter {
         }
     }
 
-    public Object etSelectItem() {
+    public Object getSelectItem() {
         return this.getItem(selectItem);
     }
 

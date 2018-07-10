@@ -139,6 +139,7 @@ public class CollectActivity extends Activity {
                 switch (msg.what) {
                     case 1: //更新视频列表
                         ((SimpleAdapter)history.getAdapter()).notifyDataSetChanged();
+                        history.requestFocus();
                         break;
                     case 2: //更新视频列表
                         ((SimpleAdapter)colection.getAdapter()).notifyDataSetChanged();
@@ -147,7 +148,6 @@ public class CollectActivity extends Activity {
                 super.handleMessage(msg);
             }
         };
-
     }
 
 

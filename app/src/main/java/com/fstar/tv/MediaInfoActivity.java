@@ -242,8 +242,8 @@ public class MediaInfoActivity  extends Activity {
         if (myApp.getVipDate()==null || myApp.getVipDate().before(new Date())){
             //vip.setText("请购买VIP");
         }else{
-            SimpleDateFormat formatdateD=new SimpleDateFormat("yyyy年MM月dd日");
-            vip.setText("VIP有效期到"+ formatdateD.format(myApp.getVipDate()));
+            SimpleDateFormat formatdateD=new SimpleDateFormat("yyyy年M月d日");
+            vip.setText("VIP有效期到\n"+ formatdateD.format(myApp.getVipDate()));
         }
     }
 

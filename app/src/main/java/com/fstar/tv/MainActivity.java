@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Gallery;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -53,6 +55,16 @@ public class MainActivity extends Activity{
     private File instaillFile = null;
 
     private MyApp myApp;
+    private ImageButton home_b_login;
+    private ImageButton home_b1;
+    private ImageButton home_b2;
+    private ImageButton home_b3;
+    private ImageButton home_b_setting;
+    private ImageButton home_b_my;
+    private ImageButton home_b_collect;
+    private ImageButton home_b_search;
+
+    private Toast devToast;
 
     @Override
     public void onBackPressed() {
@@ -76,6 +88,8 @@ public class MainActivity extends Activity{
 //        }
 
         context = this;
+
+        devToast = Toast.makeText(context,"功能开发中",Toast.LENGTH_SHORT);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -136,7 +150,6 @@ public class MainActivity extends Activity{
             }
         });
 
-
         appHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -164,13 +177,96 @@ public class MainActivity extends Activity{
             }
         };
 
+        //设置首页按钮高亮
+        View.OnFocusChangeListener imageButtonOnFocusChangeListener = new View.OnFocusChangeListener() {
+            public void onFocusChange(View view, boolean isFocused) {
+                if (isFocused == true) {
+                    view.setBackgroundColor(0x88FF0000);
+                }
+                else {
+                    view.setBackgroundColor(Color.TRANSPARENT);
+                }
+            }
+        };
+
+        home_b1 = (ImageButton) findViewById(R.id.home_b1);
+        home_b2 = (ImageButton) findViewById(R.id.home_b2);
+        home_b3 = (ImageButton) findViewById(R.id.home_b3);
+        home_b_setting = (ImageButton) findViewById(R.id.home_b_setting);
+        home_b_my = (ImageButton) findViewById(R.id.home_b_my);
+        home_b_login = (ImageButton) findViewById(R.id.home_b_login);
+        home_b_collect = (ImageButton) findViewById(R.id.home_b_collect);
+        home_b_search = (ImageButton) findViewById(R.id.home_b_search);
+
+        home_b1.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+        home_b2.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+        home_b3.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+        home_b_setting.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+        home_b_my.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+        home_b_login.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+        home_b_collect.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+        home_b_search.setOnFocusChangeListener(imageButtonOnFocusChangeListener);
+
+        home_b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                devToast.show();
+            }
+        });
+        home_b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                devToast.show();
+            }
+        });
+        home_b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                devToast.show();
+            }
+        });
+        home_b_my.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                devToast.show();
+            }
+        });
+        home_b_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                devToast.show();
+            }
+        });
+
+        home_b_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)); //直接进入手机中的wifi网络设置界面
+            }
+        });
+        home_b_collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, CollectActivity.class);
+                startActivity(intent);
+            }
+        });
+        home_b_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //init data
         new Thread(){
             @Override
             public void run() {
                 //初始化界面
                 initData();
-
                 super.run();
             }
         }.start();
