@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +36,7 @@ public class LoaddingActivity  extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.hideBottomUIMenu(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loadding);
         loddingimg = (ImageView) findViewById(R.id.imageView);
@@ -68,6 +70,8 @@ public class LoaddingActivity  extends Activity {
 
 
     }
+
+
 
     private void initData() {
         try {

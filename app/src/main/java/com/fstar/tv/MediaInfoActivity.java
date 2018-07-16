@@ -60,6 +60,7 @@ public class MediaInfoActivity  extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.hideBottomUIMenu(this);
 
         super.onCreate(savedInstanceState);
         context = this;

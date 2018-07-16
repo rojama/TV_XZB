@@ -34,6 +34,7 @@ public class PayActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.hideBottomUIMenu(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitvity_pay);
         context = this;

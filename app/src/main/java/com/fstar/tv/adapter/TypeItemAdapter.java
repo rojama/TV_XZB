@@ -71,7 +71,7 @@ public class TypeItemAdapter extends BaseAdapter {
         float bigWidth = 1.25f;  //放大倍数
         float bigHeight = 1.25f;  //放大倍数
 
-        float spacing = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,120,context.getResources().getDisplayMetrics());
+        float spacing = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25*6,context.getResources().getDisplayMetrics());
 
         int nomorlWidth = (int)((screenWidth-spacing)/(6+bigWidth));  //60=6*spacing
         int nomorHeight = (int)(screenHeight/bigHeight);

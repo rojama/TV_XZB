@@ -52,6 +52,7 @@ public class VodActivity  extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Utils.hideBottomUIMenu(this);
         context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vod);

@@ -53,6 +53,7 @@ public class SearchActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.hideBottomUIMenu(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         context = this;
