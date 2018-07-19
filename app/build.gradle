@@ -8,8 +8,8 @@ android {
         applicationId "com.fstar.tv"
         minSdkVersion 11
         targetSdkVersion 22
-        versionCode 50
-        versionName "1.16"
+        versionCode 51
+        versionName "1.17"
     }
     buildTypes {
         release {

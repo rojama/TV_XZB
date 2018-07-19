@@ -292,7 +292,7 @@ public class MainActivity extends Activity{
     private void initData() {
         try {
             String processBO = "com.fstar.cms.TVServerBO";
-            String processMETHOD = "parseTopCate";
+            String processMETHOD = "parseNewTopCate";
             String url = Config.serverBaseUrl + "/cm?ProcessMETHOD=" + processMETHOD + "&ProcessBO="
                     + processBO;
             JSONObject json = Utils.readHttpJSON(url);
