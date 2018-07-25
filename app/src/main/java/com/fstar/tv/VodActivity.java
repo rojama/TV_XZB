@@ -51,8 +51,13 @@ public class VodActivity  extends Activity {
     private Double[] price;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onResume() {
+        super.onResume();
         Utils.hideBottomUIMenu(this);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vod);
@@ -93,6 +98,16 @@ public class VodActivity  extends Activity {
                         super.run();
                     }
                 }.start();
+            }
+        });
+
+        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                Toast toast = Toast.makeText(context, "无法播放此视频", Toast.LENGTH_LONG);
+                toast.show();
+                context.onBackPressed();
+                return true;
             }
         });
 

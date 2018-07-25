@@ -50,10 +50,14 @@ public class SearchActivity extends Activity {
     private ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();  //GRID列表
     private Handler appHandler;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Utils.hideBottomUIMenu(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utils.hideBottomUIMenu(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         context = this;

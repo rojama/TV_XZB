@@ -70,8 +70,13 @@ public class DetailActivity extends Activity {
     private Toast toast;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onResume() {
+        super.onResume();
         Utils.hideBottomUIMenu(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         context = this;

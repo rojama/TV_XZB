@@ -33,8 +33,13 @@ public class PayActivity extends Activity {
     String code_url;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onResume() {
+        super.onResume();
         Utils.hideBottomUIMenu(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitvity_pay);
         context = this;

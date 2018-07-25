@@ -41,9 +41,9 @@ public class CollectActivity extends Activity {
     private ArrayList<HashMap<String, Object>> lstImageItem_colection = new ArrayList<HashMap<String, Object>>();  //GRID列表
     private Handler appHandler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utils.hideBottomUIMenu(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
         context = this;
@@ -155,6 +155,8 @@ public class CollectActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        Utils.hideBottomUIMenu(this);
+
         //init data
         new Thread() {
             @Override

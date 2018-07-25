@@ -60,8 +60,6 @@ public class MediaInfoActivity  extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utils.hideBottomUIMenu(this);
-
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_media_info);
@@ -169,7 +167,7 @@ public class MediaInfoActivity  extends Activity {
                     mediaInfo.put("series_no", last_series);
                     mediaInfo.put("last_time", last_time);
                 }
-                intent.putExtra("PLAY_INFO", mediaInfo);
+                intent.putExtra("PLAY_INFO", getMediaInfoForIntent());
                 startActivity(intent);
             }
             }
@@ -229,9 +227,17 @@ public class MediaInfoActivity  extends Activity {
 //        colection.setOnFocusChangeListener(chooseHide);
     }
 
+    private HashMap<String,Object> getMediaInfoForIntent(){
+        HashMap<String,Object> returndata = new HashMap<String,Object>();
+        returndata.putAll(this.mediaInfo);
+        returndata.remove("image_bm");  //太大，防止出现android.os.TransactionTooLargeException
+        return returndata;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        Utils.hideBottomUIMenu(this);
 
         last_paly = myApp.getHistroy(media_id);
         if (!last_paly.isEmpty()){
@@ -454,7 +460,7 @@ public class MediaInfoActivity  extends Activity {
                     //intent.putExtra("SERIES_NO", (Integer) v.getTag());
                     mediaInfo.put("series_no", (Integer) v.getTag());
                     mediaInfo.remove("last_time");
-                    intent.putExtra("PLAY_INFO", mediaInfo);
+                    intent.putExtra("PLAY_INFO", getMediaInfoForIntent());
                     startActivity(intent);
                 }
             }
@@ -464,7 +470,7 @@ public class MediaInfoActivity  extends Activity {
             public void onFocusChange(View arg0, boolean hasFocus) {
                 int tag = (int) arg0.getTag();
                 String name = mediaName.get(tag);
-                if(hasFocus && !name.isEmpty()){
+                if(hasFocus && name!=null && !name.isEmpty()){
                     String text = "第" + tag + "集:" + name;
                     if (toast != null) {
                         toast.setText(text);
